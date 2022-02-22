@@ -91,15 +91,15 @@ Please remove this note.
 
 ## YANG Model Overview
 
-The abstract (base) network data model is defined in the "ietf-network" module of {{!RFC8345}}. The OSPF-topology builds on the network data model defined in the "ietf-network" module {{!RFC8345}}, augmenting the nodes with ospf information, which anchor the links and are contained in nodes).
+The abstract (base) network data model is defined in the "ietf-network" module of {{!RFC8345}}. The OSPF-topology builds on the network data model defined in the "ietf-network" module {{!RFC8345}}, augmenting the nodes with OSPF information, which anchor the links and are contained in nodes).
 
-The set of parameters and augmentations are included just a node level. Each parameter and description are detailed following:
+There is a set of parameters and augmentations that are included at the node level. Each parameter and description are detailed following:
 
 * Network-types: Its presence identifies the OSPF topology type. Thus, the network type MUST be ospf-topology.
 + OSPF timer attributes: Identifies the node timer attributes configured in the Network-Element. They are SPF wait and the LSP generate.
 - OSPF status: contains the neighbours information.
 
-The set of parameters and augmentations are included just a termination point level. Each parameter is listed as follows:
+There is a second set of parameters and augmentations are included at the termination point level. Each parameter is listed as follows:
 
 * Interface-type
 + Area ID

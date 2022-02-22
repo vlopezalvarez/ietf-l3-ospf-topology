@@ -1,0 +1,15 @@
+module: ietf-l3-ospf-topology
+  augment /nw:networks/nw:network/nw:network-types:
+    +--rw ospf-topology!
+  augment /nw:networks/nw:network/nw:node/l3t:l3-node-attributes:
+    +--rw ospf-timer-attributes
+    |  +--rw spf-wait?       string
+    |  +--rw lsa-generate?   string
+    +--rw ospf-status
+       +--rw neighbours*   inet:ip-address
+  augment /nw:networks/nw:network/nw:node/nt:termination-point/l3t:l3-termination-point-attributes:
+    +--rw ospf-termination-point-attributes
+       +--rw interface-type?   identityref
+       +--rw area-id?          area-id-type
+       +--rw metric?           uint64
+       +--rw is-passive?       boolean

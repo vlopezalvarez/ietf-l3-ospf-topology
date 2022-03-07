@@ -42,11 +42,11 @@ The YANG data model defined in this document conforms to the Network Management 
 
 # Introduction
 
-Topology collection is a critical use case for the network operators because the network topology is an abstract representation of the physical nodes, links and network interconnections. Network  planning processes requires that the network resources are placed to meet the traffic demands requirements not just in terms of bandwidth or delay, but also for failure scenarios. Network operators does the network planning process as an offline process, which obtains the information not directly from the network, but from inventory or template information. The main reason for this process, is that there is a lack of a dynamic and programatic itnerface that can allow the planning tools to obtain such information.
+Topology collection is a critical use case for the network operators because the network topology is an abstract representation of the physical nodes, links and network interconnections. Network  planning processes requires that the network resources are placed to meet the traffic demands requirements not just in terms of bandwidth or delay, but also for failure scenarios. Network operators does the network planning process as an offline process, which obtains the information not directly from the network, but from inventory or template information. The main reason for this process was that there was a lack of a dynamic and programatic interfaces that can allow the planning tools to obtain such information.
 
-Exchanging OSPF information between a service orchestration layer and a SDN controller to create services is desirable. The deployment of L3 services with the Layer 3 VPN Network Model (L3NM) {{!RFC9182}} is more accurate if the SDN controller can export OSPF topological information, so the customer uses the information of the controller instead of getting it from inventory information. 
+Thanks to the definition of the ietf-network model in {{!RFC8345}} this situation changed, because network operators can use an API with dynamic topological information. On top of the work in {{!RFC8345}}, {{!RFC8346}} and {{!RFC8944}} extends the generic network and network topology data models with topology attributes that are specific to Layer 3 and Layer 2. However, there is not any model that exposes Open Source Path First (OSPF) information. This information is required in the IP/MPLS planning process to properly assess the required network resources to meet the traffic demands in normal and failure scenarios. 
 
-The main idea of this model is to represent most relevant OSPF topology attributes.
+The main objective of this model is to represent most relevant OSPF topology attributes.
 
 This document defines a YANG data model for representing, managing and controlling the OSPF topology. The data model augments ietf-network module {{!RFC8345}} by adding the OSPF information.
 
@@ -56,13 +56,9 @@ The YANG data model defined in this document conforms to the Network Management 
 
 ## Terminology and Notations 
 
-This document assumes that the reader is familiar with the contents of {{!RFC8345}}, . The document uses terms from those documents.
+This document assumes that the reader is familiar with the contents of {{!RFC8345}}. The document uses terms from those documents.
 
 The terminology for describing YANG data models is found in {{!RFC7950}}, {{!RFC8795}} and {{!RFC8346}}.
-
-Following terms are used for the representation of this data model.
-
-TBD
 
 ## Requirements Language
 

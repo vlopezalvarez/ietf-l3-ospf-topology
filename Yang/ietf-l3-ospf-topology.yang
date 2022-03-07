@@ -2,7 +2,7 @@ module ietf-l3-ospf-topology {
   yang-version 1.1;
   namespace
     "urn:ietf:params:xml:ns:yang:ietf-l3-ospf-topology";
-  prefix "ospfl3t";
+  prefix "ospfnt";
   import ietf-yang-types {
           prefix "yang";
       }
@@ -58,131 +58,144 @@ module ietf-l3-ospf-topology {
   typedef area-id-type {
     type yang:dotted-quad;
     description
-      "Area ID type.";
+      "An identifier for the OSPFv2 area.";
+    reference
+         "RFC 2328: OSPF Version 2";
   }
 
   identity inf-type {
     description
       "Identity for the OSPF interface type.";
+    reference
+         "RFC 2328: OSPF Version 2";
   }
 
   identity nbma {
     base inf-type;
     description
-      "Identity for the nbma interface.";
+      "Identity for the NBMA interface.";
+    reference
+         "RFC 2328: OSPF Version 2";
   }
 
   identity p2mp {
     base inf-type;
     description
       "Identity for the p2mp interface.";
+    reference
+         "RFC 2328: OSPF Version 2";
   }
   identity p2mp-over-lan {
     base inf-type;
     description
       "Identity for the p2mp-over-lan interface.";
+    reference
+         "RFC 2328: OSPF Version 2";
   }
 
   identity p2p {
     base inf-type;
     description
       "Identity for the p2p interface.";
+    reference
+         "RFC 2328: OSPF Version 2";
   }
 
-  grouping ospf-topology-type {
-    description "Identifies the topology type to be OSPF.";
-    container ospf-topology {
-      presence "indicates OSPF topology";
+  grouping ospfv2-topology-type {
+    description "Identifies the topology type to be OSPF v2.";
+    container ospfv2-topology {
+      presence "indicates OSPF v2 topology";
       description
-        "The presence of the container node indicates OSPF
+        "The presence of the container node indicates OSPF v2
         topology";
     }
   }
 
   grouping ospfv2-node-attributes {
     description "OSPF v2 node scope attributes";
-    container spf-timer-attributes {
+    container ospf-timer-attributes {
       description
-        "SPF timers parameters for OSPFv2";
-      leaf initial-delay {
+        "Contains OSPFv2 node timer attributes";
+      leaf wait-timer {
         type uint32;
         units msec;
         description
-          "The value of this leaf specifies the time between a change
-          in topology being detected and the first run of the SPF
-          algorithm.";
+          "The amount of time to wait without detecting SPF
+          trigger events before going back to the rapid delay.";
+        reference
+         "RFC 8541: SPF Impact on IGP Micro-loops";
       }
-      leaf maximum-delay {
+      leaf rapid-delay {
         type uint32;
         units msec;
         description
-          "The value of this leaf specifies the maximum delay between
-          a topology change being detected and the SPF algorithm
-          running. This value is used for implementations that support
-          increasing the wait time between SPF runs.";
+          "The amount of time to wait before running SPF after
+          the initial SPF trigger event.";
+        reference
+         "RFC 8541: SPF Impact on IGP Micro-loops";
       }
-      leaf lsa-generate {
-        type string;
-        description
-          "Node name";
-      }
-    }
-    container lsa-generate-timer-attributes {
-      description
-        "LSA generate timers parameters for OSPFv2";
-      leaf initial-delay {
+      leaf slow-delay {
         type uint32;
         units msec;
         description
-          "The value of this leaf specifies the time between the first
-          time an LSA is generated and advertised and the subsequent
-          generation of that LSA.";
+          "The amount of time to wait before running an SPF.";
+        reference
+         "RFC 8541: SPF Impact on IGP Micro-loops";
       }
-      leaf maximum-delay {
-        type uint32;
-        units msec;
+      leaf timer-type {
+        type enumeration {
+          enum LINEAR_BACKOFF {
+            description
+              "The link state routing protocol uses linear back-off.";
+          }
+          enum EXPONENTIAL_BACKOFF {
+            description
+              "The link state routing protocol uses exponential back-off.";
+          }
         description
-          "The value of this leaf specifies the maximum time between the
-          generation of an LSA and the subsequent re-generation of that
-          LSA. This value is used in implementations that support
-          increasing delay between generation of an LSA";
-      }
-    }
-    container status{
-      description "";
-      leaf-list neighbours {
-        type inet:ip-address;
-        description
-          "Topology flags";
+          "The timer mode that is utilised by the SPF algorithm.";
+
+        reference
+         "RFC 8541: SPF Impact on IGP Micro-loops";
       }
     }
   }
 
   grouping ospfv2-termination-point-attributes {
     description "OSPF termination point scope attributes";
-    container ospf-termination-point-attributes {
-      description "";
+    container ospfv2-termination-point-attributes {
+      description "Indicates the termination point from the
+              which the OSPF is configured. A termination
+              point can be a physical port, an interface, etc.";
       leaf interface-type {
         type identityref {
           base inf-type ;
         }
         description
-          "Link OSPF 2";
+          "The OSPF interface type.";
+        reference
+          "RFC 2328: OSPF Version 2";
       }
       leaf area-id {
         type area-id-type;
-          description
-              "Link OSPF 2";
+        description
+          "An identifier for the OSPFv2 area.";
+        reference
+          "RFC 2328: OSPF Version 2";
       }
       leaf metric {
         type uint64;
         description
-          "Link OSPF 2";
+          "OSFP Protocol metric";
+        reference
+          "RFC 2328: OSPF Version 2";
       }
       leaf is-passive{
         type boolean;
         description
           "Interface passive mode";
+        reference
+          "RFC 2328: OSPF Version 2";
       }
     }
   }
@@ -202,6 +215,17 @@ module ietf-l3-ospf-topology {
     description
         "OSPF node-level attributes ";
     uses ospf-node-attributes;
+  }
+
+  augment "/nw:networks/nw:network/"
+         + "nt:link/l3t:l3-link-attributes" {
+    when "/nw:networks/nw:network/nw:network-types/ospf:ospf-topology" {
+      description
+        "Augmentation parameters apply only for networks with
+        OSFP topology";
+    }
+    description "Augments topology link configuration";
+    uses ospf-termination-point-attributes;
   }
 
   augment "/nw:networks/nw:network/nw:node/"

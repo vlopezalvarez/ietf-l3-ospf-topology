@@ -15,9 +15,7 @@ module ietf-l3-ospf-topology {
   import ietf-l3-unicast-topology {
     prefix "l3t";
   }
-  import ietf-inet-types {
-    prefix "inet";
-  }
+
   organization
     "IETF OPSA (Operations and Management Area) Working Group";
   contact
@@ -117,20 +115,20 @@ module ietf-l3-ospf-topology {
       description
         "Contains OSPFv2 node timer attributes";
       leaf wait-timer {
-        type uint32;
-        units msec;
         description
           "The amount of time to wait without detecting SPF
-          trigger events before going back to the rapid delay.";
+          trigger events before going back to the rapid delay.";        
+        type uint32;
+        units msec;
         reference
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
       leaf rapid-delay {
-        type uint32;
-        units msec;
         description
           "The amount of time to wait before running SPF after
-          the initial SPF trigger event.";
+          the initial SPF trigger event.";        
+        type uint32;
+        units msec;
         reference
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
@@ -143,6 +141,8 @@ module ietf-l3-ospf-topology {
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
       leaf timer-type {
+        description
+          "The timer mode that is utilised by the SPF algorithm.";
         type enumeration {
           enum LINEAR_BACKOFF {
             description
@@ -152,9 +152,7 @@ module ietf-l3-ospf-topology {
             description
               "The link state routing protocol uses exponential back-off.";
           }
-        description
-          "The timer mode that is utilised by the SPF algorithm.";
-
+        }
         reference
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
@@ -164,7 +162,8 @@ module ietf-l3-ospf-topology {
   grouping ospfv2-termination-point-attributes {
     description "OSPF termination point scope attributes";
     container ospfv2-termination-point-attributes {
-      description "Indicates the termination point from the
+      description 
+        "Indicates the termination point from the
               which the OSPF is configured. A termination
               point can be a physical port, an interface, etc.";
       leaf interface-type {
@@ -172,7 +171,7 @@ module ietf-l3-ospf-topology {
           base inf-type ;
         }
         description
-          "The OSPF interface type.";
+          "OSPF interface type.";
         reference
           "RFC 2328: OSPF Version 2";
       }
@@ -203,40 +202,39 @@ module ietf-l3-ospf-topology {
   augment "/nw:networks/nw:network/nw:network-types" {
     description
       "Introduces new network type for L3 Unicast topology";
-    uses ospf-topology-type;
+    uses ospfv2-topology-type;
   }
   
   augment "/nw:networks/nw:network/nw:node/l3t:l3-node-attributes" {
-    when "/nw:networks/nw:network/nw:network-types/ospf:ospf-topology" {
+    when "/nw:networks/nw:network/nw:network-types/ospfnt:ospfv2-topology" {
       description
         "Augmentation parameters apply only for networks with
         OSPF topology";
     }
     description
         "OSPF node-level attributes ";
-    uses ospf-node-attributes;
+    uses ospfv2-node-attributes;
   }
 
   augment "/nw:networks/nw:network/"
          + "nt:link/l3t:l3-link-attributes" {
-    when "/nw:networks/nw:network/nw:network-types/ospf:ospf-topology" {
+    when "/nw:networks/nw:network/nw:network-types/ospfnt:ospfv2-topology" {
       description
         "Augmentation parameters apply only for networks with
         OSFP topology";
     }
     description "Augments topology link configuration";
-    uses ospf-termination-point-attributes;
+    uses ospfv2-termination-point-attributes;
   }
 
   augment "/nw:networks/nw:network/nw:node/"
          +"nt:termination-point/l3t:l3-termination-point-attributes" {
-    when "/nw:networks/nw:network/nw:network-types/ospf:ospf-topology" {
+    when "/nw:networks/nw:network/nw:network-types/ospfnt:ospfv2-topology" {
       description
         "Augmentation parameters apply only for networks with
         OSFP topology";
     }
     description "Augments topology termination point configuration";
-    uses ospf-termination-point-attributes;
+    uses ospfv2-termination-point-attributes;
   }
-  
 }

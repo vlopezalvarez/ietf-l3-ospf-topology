@@ -1,7 +1,7 @@
 ---
 coding: utf-8
 
-title: A YANG Data Model for Open Source Path First (OSPF) topology
+title: A YANG Data Model for Open Source Path First (OSPF) Topology
 
 abbrev: OSPF Topology YANG
 docname: draft-ogondio-opsawg-ospf-topology-00
@@ -42,7 +42,7 @@ The YANG data model defined in this document conforms to the Network Management 
 
 # Introduction
 
-Topology collection is a critical use case for the network operators because the network topology is an abstract representation of the physical nodes, links and network interconnections. 
+Topology collection is a critical use case for the network operators because the network topology is an abstract representation of the physical nodes, links and network interconnections. Network  planning processes requires that the network resources are placed to meet the traffic demands requirements not just in terms of bandwidth or delay, but also for failure scenarios. Network operators does the network planning process as an offline process, which obtains the information not directly from the network, but from inventory or template information. The main reason for this process, is that there is a lack of a dynamic and programatic itnerface that can allow the planning tools to obtain such information.
 
 Exchanging OSPF information between a service orchestration layer and a SDN controller to create services is desirable. The deployment of L3 services with the Layer 3 VPN Network Model (L3NM) {{!RFC9182}} is more accurate if the SDN controller can export OSPF topological information, so the customer uses the information of the controller instead of getting it from inventory information. 
 

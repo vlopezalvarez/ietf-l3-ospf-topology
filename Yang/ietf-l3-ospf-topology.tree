@@ -1,19 +1,22 @@
 module: ietf-l3-ospf-topology
   augment /nw:networks/nw:network/nw:network-types:
     +--rw ospfv2-topology!
-  augment /nw:networks/nw:network/nw:node/l3t:l3-node-attributes:
+  augment /nw:networks/nw:network/nw:node/
+    l3t:l3-node-attributes:
     +--rw ospf-timer-attributes
        +--rw wait-timer?    uint32
        +--rw rapid-delay?   uint32
        +--rw slow-delay?    uint32
        +--rw timer-type?    enumeration
-  augment /nw:networks/nw:network/nt:link/l3t:l3-link-attributes:
+  augment /nw:networks/nw:network/nt:link/
+    l3t:l3-link-attributes:
     +--rw ospfv2-termination-point-attributes
        +--rw interface-type?   identityref
        +--rw area-id?          area-id-type
        +--rw metric?           uint64
        +--rw is-passive?       boolean
-  augment /nw:networks/nw:network/nw:node/nt:termination-point/l3t:l3-termination-point-attributes:
+  augment /nw:networks/nw:network/nw:node/nt:termination-point/
+    l3t:l3-termination-point-attributes:
     +--rw ospfv2-termination-point-attributes
        +--rw interface-type?   identityref
        +--rw area-id?          area-id-type

@@ -50,7 +50,8 @@ module ietf-l3-ospf-topology {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for Open Source Path First (OSPF) Topology";
+      "RFC XXXX: A YANG Data Model for Open Source Path First
+       (OSPF) Topology"; 
   }
   
   typedef area-id-type {
@@ -114,21 +115,21 @@ module ietf-l3-ospf-topology {
     container ospf-timer-attributes {
       description
         "Contains OSPFv2 node timer attributes";
-      leaf wait-timer {
+      leaf wait-timer {      
+        type uint32;
+        units msec;        
         description
           "The amount of time to wait without detecting SPF
-          trigger events before going back to the rapid delay.";        
-        type uint32;
-        units msec;
+          trigger events before going back to the rapid delay.";  
         reference
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
       leaf rapid-delay {
+        type uint32;
+        units msec;        
         description
           "The amount of time to wait before running SPF after
           the initial SPF trigger event.";        
-        type uint32;
-        units msec;
         reference
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
@@ -141,18 +142,20 @@ module ietf-l3-ospf-topology {
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
       leaf timer-type {
-        description
-          "The timer mode that is utilised by the SPF algorithm.";
         type enumeration {
           enum LINEAR_BACKOFF {
             description
-              "The link state routing protocol uses linear back-off.";
+              "The link state routing protocol uses linear 
+               back-off.";
           }
           enum EXPONENTIAL_BACKOFF {
             description
-              "The link state routing protocol uses exponential back-off.";
-          }
-        }
+              "The link state routing protocol uses exponential
+               back-off."; 
+          } 
+        } 
+        description
+          "The timer mode that is utilised by the SPF algorithm.";
         reference
          "RFC 8541: SPF Impact on IGP Micro-loops";
       }
@@ -205,8 +208,11 @@ module ietf-l3-ospf-topology {
     uses ospfv2-topology-type;
   }
   
-  augment "/nw:networks/nw:network/nw:node/l3t:l3-node-attributes" {
-    when "/nw:networks/nw:network/nw:network-types/ospfnt:ospfv2-topology" {
+  augment "/nw:networks/nw:network/nw:node/"
+    +"l3t:l3-node-attributes" {
+    when 
+    "/nw:networks/nw:network/nw:network-types/"
+      +"ospfnt:ospfv2-topology" {
       description
         "Augmentation parameters apply only for networks with
         OSPF topology";
@@ -217,8 +223,9 @@ module ietf-l3-ospf-topology {
   }
 
   augment "/nw:networks/nw:network/"
-         + "nt:link/l3t:l3-link-attributes" {
-    when "/nw:networks/nw:network/nw:network-types/ospfnt:ospfv2-topology" {
+      + "nt:link/l3t:l3-link-attributes" {
+    when "/nw:networks/nw:network/nw:network-types/"
+      +"ospfnt:ospfv2-topology" {
       description
         "Augmentation parameters apply only for networks with
         OSFP topology";
@@ -228,8 +235,9 @@ module ietf-l3-ospf-topology {
   }
 
   augment "/nw:networks/nw:network/nw:node/"
-         +"nt:termination-point/l3t:l3-termination-point-attributes" {
-    when "/nw:networks/nw:network/nw:network-types/ospfnt:ospfv2-topology" {
+      +"nt:termination-point/l3t:l3-termination-point-attributes" {
+    when "/nw:networks/nw:network/nw:network-types/"
+      +"ospfnt:ospfv2-topology" {
       description
         "Augmentation parameters apply only for networks with
         OSFP topology";
